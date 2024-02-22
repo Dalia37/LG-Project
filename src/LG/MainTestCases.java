@@ -1,6 +1,9 @@
 package LG;
 
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+
 import java.sql.Driver;
 import java.time.Duration;
 import java.util.Random;
@@ -32,7 +35,7 @@ public class MainTestCases extends Parameter {
 	}
 	
 	
-	@Test
+	@Test(priority = 1,enabled = true)
 	public void RandomItem() throws InterruptedException {
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));// Adjust the timeout as needed
         
@@ -54,6 +57,71 @@ public class MainTestCases extends Parameter {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", randomItem); // Fallback to JavaScript click
         }
     }
+	
+	@Test(priority = 2 , enabled = true)
+	public void AddtoCart() {
+	    WebElement Addbtn = driver.findElement(By.cssSelector(".single_add_to_cart_button.button"));
+		Addbtn.click();
+		
+		String ActualText = driver.findElement(By.cssSelector("div[role='alert']")).getText();
+		assertEquals(ActualText.contains("added to your cart"), true);
+		
+	}
+	
+	@Test(priority = 3, enabled = true)
+	public void signUp() {
+	    driver.findElement(By.cssSelector(".header-icon.header-icon__user-account.dropdown.animate-dropdown")).click();
+	    System.out.println("Clicked the dropdown toggle successfully.");
+	    driver.findElement(By.cssSelector(".sign-in-button")).click();
+	}
+	
+	@Test(enabled = true , priority = 4)
+	public void Register() throws InterruptedException {
+		WebElement emailInpt=driver.findElement(By.id("reg_email"));
+		emailInpt.sendKeys("dddd@gmail.com");
+		
+		
+		WebElement passInput =driver.findElement(By.id("reg_password"));
+		passInput.sendKeys(passwords[RandPassword]);
+		
+		WebElement dateInput =driver.findElement(By.id("billing_birth_date"));
+		dateInput.sendKeys(datesOfBirth[RandDates]+"");
+		Thread.sleep(3000);
+		
+		WebElement btn = driver.findElement(By.cssSelector("button[value='Register']"));
+		btn.click();
+		
+		String ActualText = driver.findElement(By.cssSelector("body > div:nth-child(3) > div:nth-child(1) > div:nth-child(5) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > main:nth-child(1) > article:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > p:nth-child(2)")).getText();
+       assertEquals(ActualText.contains("Hello"), true);
+
+		
+		
+		
+	}
+	
+	@Test(priority = 5,enabled = true)
+	public void changePassword() {
+		driver.findElement(By.cssSelector("body > div:nth-child(3) > div:nth-child(1) > div:nth-child(5) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > main:nth-child(1) > article:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > p:nth-child(3) > a:nth-child(3)")).click();
+		
+		WebElement current = driver.findElement(By.id("password_current"));
+		current.sendKeys(passwords[RandPassword]);
+		
+		WebElement newPass = driver.findElement(By.id("password_1"));
+		newPass.sendKeys("Amal@1478dd");
+		
+		WebElement confirmPass = driver.findElement(By.id("password_2"));
+		confirmPass.sendKeys("Amal@1478dd");
+		
+		driver.findElement(By.name("save_account_details")).click();
+		
+	}
+
+
+	
+	
+
+	
+	
 	
 	
 	@AfterTest

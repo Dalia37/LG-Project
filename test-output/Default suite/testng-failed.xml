@@ -5,8 +5,8 @@
     <classes>
       <class name="LG.MainTestCases">
         <methods>
+          <include name="changePassword"/>
           <include name="postTests"/>
-          <include name="RandomItem"/>
           <include name="setup"/>
         </methods>
       </class> <!-- LG.MainTestCases -->
